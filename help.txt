@@ -1,3 +1,10 @@
 print("\u2705") -> ICON for completed task
 
 print("no") (In red) - > Text for incompleted task
+
+
+ARGS FOR NOW
+  # print(args.complete)
+  # print(args.add)
+  # print(args.list)
+  # print(args.delete)

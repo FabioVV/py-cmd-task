@@ -1,7 +1,11 @@
+from colorama import Fore, Back, Style
 import json
+
 
 # Initialize main variables - (I may not be using them right now.)
 item = {}
+
+
 
 def add():
     pass
