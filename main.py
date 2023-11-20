@@ -2,7 +2,6 @@ from todo import todo
 import subprocess
 import platform
 import argparse
-import json
 import sys
 import os
 

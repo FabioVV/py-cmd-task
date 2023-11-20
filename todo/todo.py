@@ -32,7 +32,7 @@ class Task:
 
         if todos is None:
             if os.path.exists(data_path):
-                with open(f'{os.getcwd()}/data/.todos.json', 'r') as todos:
+                with open(data_path, 'r') as todos:
                     tasks = json.load(todos)
                     return tasks
 
@@ -41,7 +41,7 @@ class Task:
         else:
             if not os.path.exists(data_path):
 
-                with open(f'{os.getcwd()}/data/.todos.json', 'w+') as todos:
+                with open(data_path, 'w+') as todos:
 
                     task = [asdict(self)]
                     json.dump(task, todos, indent=4)
@@ -51,7 +51,7 @@ class Task:
 
             elif os.path.exists(data_path):
 
-                with open(f'{os.getcwd()}/data/.todos.json', 'r+') as todos:
+                with open(data_path, 'r+') as todos:
                     
                     tasks = json.load(todos)
                     tasks.append(asdict(self))
@@ -138,7 +138,7 @@ class Task:
                         todo['done'] = True
                         todo['done_at'] =  datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
-                with open(f'{os.getcwd()}/data/.todos.json', 'r+') as todos:
+                with open(data_path, 'r+') as todos:
                     todos.seek(0)
                     todos.truncate()
 
@@ -169,7 +169,7 @@ class Task:
                     if int(todo['id']) == int(task):
                         del temp[temp.index(todo)]
 
-                with open(f'{os.getcwd()}/data/.todos.json', 'r+') as todos:
+                with open(data_path, 'r+') as todos:
                     todos.seek(0)
                     todos.truncate()
 
