@@ -1,9 +1,10 @@
 from dataclasses import dataclass, asdict
+from typing import Any, Literal
 from datetime import datetime
+from colorama import Fore
+import pretty_tables
 import json
 import os
-from typing import Any, Literal
-
 
 # Main 'Database' file
 data_path = f'{os.getcwd()}/data/.todos.json'
@@ -19,18 +20,12 @@ class Task:
     created_at: str
     done_at: str
 
-    # Don't need this. Not right now. Maybe never.
-    # def __init__(self, id, name, done, created_at, done_at):
-    #     self.id = id
-    #     self.name = name
-    #     self.done = done
-    #     self.created_at = created_at
-    #     self.done_at = done_at
-
+    def __init__(self):
+        self.created_at = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+        self.done_at = ''
+        
 
     def open(self, todos = None) -> (Any | Literal[False] | None):
-
-        print(todos)
 
         if todos is None:
             if os.path.exists(data_path):
@@ -67,16 +62,58 @@ class Task:
 
 
     def printTodos(self):
-        pass
+        """Read your todo's and display it to the CLI
+        """
+        headers = ["Nº", "Name", "Done?", "Created at", "Completed at"]
+        rows = []
+        total_pending = 0
 
-    def countPending(self):
-        pass
+        for todo in self.open():
+
+            if not todo['done']:
+                todo['done'] = 'No'
+                total_pending += 1 
+            else:
+                todo['done'] = " \u2705"
+
+            if not todo['done_at']:
+                todo['done_at'] = 'Not completed yet.'
+
+            rows.append([todo['id'], todo['name'], todo['done'], todo['created_at'], todo['done_at']])
+
+        colors = [
+            pretty_tables.Colors.bold,
+            pretty_tables.Colors.cyan,
+            pretty_tables.Colors.cyan,
+            pretty_tables.Colors.bold,
+            pretty_tables.Colors.bold,
+        ]
+
+        table = pretty_tables.create(
+            headers=headers,
+            rows=rows,
+            empty_cell_placeholder='--',
+            colors=colors, 
+        )
+
+        for _ in range(2):
+            print()
+
+        print(table)
+        print()
+        print(Fore.RED + '-'*67)
+        print(Fore.WHITE + f'| Total tasks pending... > {str(total_pending)} {" "*36} |')
+        print(Fore.RED + '-'*67)
+
+        for _ in range(2):
+            print(Fore.RESET + '')
+
 
     def add(self):
         """Add todo's to your list
         """
         self.open(todos=asdict(self))
-        
+
 
     def complete(self):
         pass
@@ -88,4 +125,4 @@ class Task:
 
 
  # Used for testing.
-Task(2,'testes', False, datetime.today().strftime("%Y-%m-%d %H:%M:%S"), datetime.today().strftime("%Y-%m-%d %H:%M:%S")).add()
+Task().printTodos()

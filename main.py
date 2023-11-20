@@ -1,5 +1,3 @@
-from colorama import Fore, Back, Style
-from prettytable import PrettyTable
 from todo import todo
 import subprocess
 import platform
@@ -21,7 +19,6 @@ args = parser.parse_args()
 config = vars(args)
 
 def main():
-  table = PrettyTable()
 
   # Check to see if any number of arguments have been passed
   if not len(sys.argv) > 1:
