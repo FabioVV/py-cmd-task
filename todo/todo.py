@@ -33,6 +33,7 @@ class Task:
         else :
             self.id = id
 
+
     def open(self, todos = None) -> (Any | Literal[False] | None):
 
         if todos is None:
@@ -69,8 +70,6 @@ class Task:
 
             else:
                 return False
-
-
 
 
     def printTodos(self):
@@ -156,7 +155,6 @@ class Task:
         else:
             return False
 
-            
 
     def delete(self, task_id):
         
@@ -186,7 +184,6 @@ class Task:
                 return False
         else:
             return False
-
 
 
 # Used for testing.

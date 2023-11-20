@@ -33,6 +33,7 @@ def main():
 
   else:
     match platform.system():
+      
       case 'Windows':
         subprocess.call('cls', shell=True)
       case _:
