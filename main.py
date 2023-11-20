@@ -6,7 +6,6 @@ import sys
 import os
 
 # Initialize main variables - (I may not be using them right now.)
-commands = ['']
 parser = argparse.ArgumentParser(description='Todo CLI.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument('-l', '--list', help='Write this if you want to list your tasks.', action="store_true")

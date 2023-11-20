@@ -21,12 +21,17 @@ class Task:
     done_at: str
 
     def __init__(self, id = 0, name='', done=False, created_at='', done_at=''):
-        self.id = id
+
         self.name = name
         self.done = done
         self.created_at = created_at
         self.done_at = done_at
 
+        if self.open()[-1]['id']:
+            self.id = int(self.open()[-1]['id']) + 1
+            
+        else :
+            self.id = id
 
     def open(self, todos = None) -> (Any | Literal[False] | None):
 
@@ -109,7 +114,7 @@ class Task:
         print(table)
         print()
         print(Fore.RED + '-'*67)
-        print(Fore.WHITE + f'| Total tasks pending... > {str(total_pending)} {" "*36} |')
+        print(Fore.WHITE + f'| Total pending tasks ... > {str(total_pending)} {" "*36} |')
         print(Fore.RED + '-'*67)
 
         for _ in range(2):
