@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(description='Todo CLI.', formatter_class=argpar
 parser.add_argument('-l', '--list', help='Write this if you want to list your tasks.', action="store_true")
 parser.add_argument('-d', '--delete', help='Write this if you want to delete a task. Should be followed either by the name of the task, or its corresponding number.')
 parser.add_argument('-a', '--add', help='Write this if you want to add a task to your list.')
-parser.add_argument('-c', '--complete', help='Write this if you want to complete a task. Should be followed either by the name of the task, or its corresponding number.')
+parser.add_argument('-c', '--complete', help='Write this if you want to complete a task. Should be followed by its corresponding number.')
 
 args = parser.parse_args()
 config = vars(args)

@@ -20,10 +20,13 @@ class Task:
     created_at: str
     done_at: str
 
-    def __init__(self):
-        self.created_at = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
-        self.done_at = ''
-        
+    def __init__(self, id = 0, name='', done=False, created_at='', done_at=''):
+        self.id = id
+        self.name = name
+        self.done = done
+        self.created_at = created_at
+        self.done_at = done_at
+
 
     def open(self, todos = None) -> (Any | Literal[False] | None):
 
@@ -42,7 +45,8 @@ class Task:
 
                     task = [asdict(self)]
                     json.dump(task, todos, indent=4)
-                     
+                
+                return True
 
 
             elif os.path.exists(data_path):
@@ -54,6 +58,9 @@ class Task:
                     todos.seek(0)
                     todos.truncate()
                     json.dump(tasks, todos, indent=4)
+
+                return True
+
 
             else:
                 return False
@@ -71,7 +78,7 @@ class Task:
         for todo in self.open():
 
             if not todo['done']:
-                todo['done'] = 'No'
+                todo['done'] = ' No'
                 total_pending += 1 
             else:
                 todo['done'] = " \u2705"
@@ -115,14 +122,63 @@ class Task:
         self.open(todos=asdict(self))
 
 
-    def complete(self):
-        pass
+    def complete(self, task):
 
-    def delete(self):
-        pass
+        temp = self.open()
+
+        if not os.path.exists(data_path):
+
+            return print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
+
+        elif os.path.exists(data_path):
+
+            for todo in temp:
+                if int(todo['id']) == int(task):
+                    todo['done'] = True
+                    todo['done_at'] =  datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+
+            with open(f'{os.getcwd()}/data/.todos.json', 'r+') as todos:
+                todos.seek(0)
+                todos.truncate()
+
+                json.dump(temp, todos, indent=4)
+
+            return True
+
+        else:
+            return False
+            
+
+    def delete(self, task):
+        
+        temp = self.open()
+
+        if not os.path.exists(data_path):
+
+            return print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
+
+        elif os.path.exists(data_path):
+
+            for todo in temp:
+                if int(todo['id']) == int(task):
+                    del temp[temp.index(todo)]
+            print(temp)
+            with open(f'{os.getcwd()}/data/.todos.json', 'r+') as todos:
+                todos.seek(0)
+                todos.truncate()
+
+                json.dump(temp, todos, indent=4)
+
+            return True 
+
+        else:
+            return False
 
 
 
 
- # Used for testing.
-Task().printTodos()
+# Used for testing.
+# Task(5, 'a', False, datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), '').add()
+# Task().printTodos()
+# Task().complete(5)
+# Task().delete(5)

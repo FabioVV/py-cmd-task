@@ -1,6 +1,6 @@
 print("\u2705") -> ICON for completed task
 
-print("no") (In red) - > Text for incompleted task
+print("No") (In red) - > Text for incompleted task
 
 
 ARGS FOR NOW
