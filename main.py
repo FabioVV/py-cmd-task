@@ -48,13 +48,20 @@ def main():
       todo.Task().printTodos()
 
     elif args.complete:
-      todo.Task().complete(args.complete)
-      todo.Task().printTodos()
+      try:
+        todo.Task().complete(args.complete)
+        todo.Task().printTodos()
+      except Exception:
+        todo.Task().printTodos()
+        print('Please, enter a number corresponding to a task.')
 
     elif args.delete:
-      todo.Task().delete(args.delete)
-      todo.Task().printTodos()
-
+      try:
+        todo.Task().delete(int(args.delete))
+        todo.Task().printTodos()
+      except Exception:
+        todo.Task().printTodos()
+        print('Please, enter a number corresponding to a task.')
 
 
 if __name__ == '__main__':

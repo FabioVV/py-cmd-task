@@ -126,67 +126,61 @@ class Task:
 
     def complete(self, task_id):
 
-        if type(task_id) == int:
-            temp = self.open()
+    
+        temp = self.open()
 
-            if not os.path.exists(self.data_path):
+        if not os.path.exists(self.data_path):
 
-                return print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
+            return print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
 
-            elif os.path.exists(self.data_path):
+        elif os.path.exists(self.data_path):
 
-                for todo in temp:
-                    if int(todo['id']) == int(task_id):
-                        todo['done'] = True
-                        todo['done_at'] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+            for todo in temp:
+                if int(todo['id']) == int(task_id):
+                    todo['done'] = True
+                    todo['done_at'] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
-                with open(self.data_path, 'r+') as todos:
-                    todos.seek(0)
-                    todos.truncate()
+            with open(self.data_path, 'r+') as todos:
+                todos.seek(0)
+                todos.truncate()
 
-                    json.dump(temp, todos, indent=4)
+                json.dump(temp, todos, indent=4)
 
-                return True
+            return True
 
-            else:
-                return False
         else:
             return False
-
+       
 
     def delete(self, task_id):
         
+        temp = self.open()
 
-        if type(task_id) == int:
-            temp = self.open()
+        if not os.path.exists(self.data_path):
 
-            if not os.path.exists(self.data_path):
+            print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
 
-                print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
+        elif os.path.exists(self.data_path):
 
-            elif os.path.exists(self.data_path):
+            for todo in temp:
+                if int(todo['id']) == int(task_id):
+                    del temp[temp.index(todo)]
 
-                for todo in temp:
-                    if int(todo['id']) == int(task_id):
-                        del temp[temp.index(todo)]
+            with open(self.data_path, 'r+') as todos:
+                todos.seek(0)
+                todos.truncate()
 
-                with open(self.data_path, 'r+') as todos:
-                    todos.seek(0)
-                    todos.truncate()
+                json.dump(temp, todos, indent=4)
 
-                    json.dump(temp, todos, indent=4)
+            return True 
 
-                return True 
-
-            else:
-                return False
         else:
             return False
-
+        
 
 # Used for testing.
 # Task(5, 'a', False, datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), '').add()
-Task().printTodos()
+# Task().printTodos()
 # Task().complete(5)
 # Task().delete(5)
 
