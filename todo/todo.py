@@ -6,9 +6,6 @@ import pretty_tables
 import json
 import os
 
-# Main 'Database' file
-data_path = f'{os.getcwd()}/data/.todos.json'
-
 
 
 # Task class
@@ -26,6 +23,8 @@ class Task:
         self.done = done
         self.created_at = created_at
         self.done_at = done_at
+        self.data_path = f'{os.getcwd()}/data/.todos.json'
+
 
         if self.open()[-1]['id']:
             self.id = int(self.open()[-1]['id']) + 1
@@ -33,21 +32,20 @@ class Task:
         else :
             self.id = id
 
-
     def open(self, todos = None) -> (Any | Literal[False] | None):
 
         if todos is None:
-            if os.path.exists(data_path):
-                with open(data_path, 'r') as todos:
+            if os.path.exists(self.data_path):
+                with open(self.data_path, 'r') as todos:
                     tasks = json.load(todos)
                     return tasks
 
             else: return False
 
         else:
-            if not os.path.exists(data_path):
+            if not os.path.exists(self.data_path):
 
-                with open(data_path, 'w+') as todos:
+                with open(self.data_path, 'w+') as todos:
 
                     task = [asdict(self)]
                     json.dump(task, todos, indent=4)
@@ -55,9 +53,9 @@ class Task:
                 return True
 
 
-            elif os.path.exists(data_path):
+            elif os.path.exists(self.data_path):
 
-                with open(data_path, 'r+') as todos:
+                with open(self.data_path, 'r+') as todos:
                     
                     tasks = json.load(todos)
                     tasks.append(asdict(self))
@@ -131,18 +129,18 @@ class Task:
         if type(task_id) == int:
             temp = self.open()
 
-            if not os.path.exists(data_path):
+            if not os.path.exists(self.data_path):
 
                 return print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
 
-            elif os.path.exists(data_path):
+            elif os.path.exists(self.data_path):
 
                 for todo in temp:
                     if int(todo['id']) == int(task_id):
                         todo['done'] = True
                         todo['done_at'] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
-                with open(data_path, 'r+') as todos:
+                with open(self.data_path, 'r+') as todos:
                     todos.seek(0)
                     todos.truncate()
 
@@ -162,17 +160,17 @@ class Task:
         if type(task_id) == int:
             temp = self.open()
 
-            if not os.path.exists(data_path):
+            if not os.path.exists(self.data_path):
 
                 print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
 
-            elif os.path.exists(data_path):
+            elif os.path.exists(self.data_path):
 
                 for todo in temp:
                     if int(todo['id']) == int(task_id):
                         del temp[temp.index(todo)]
 
-                with open(data_path, 'r+') as todos:
+                with open(self.data_path, 'r+') as todos:
                     todos.seek(0)
                     todos.truncate()
 
@@ -188,6 +186,11 @@ class Task:
 
 # Used for testing.
 # Task(5, 'a', False, datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), '').add()
-# Task().printTodos()
+Task().printTodos()
 # Task().complete(5)
 # Task().delete(5)
+
+
+
+# win 
+# print(os.path.expanduser('~/documents/'))
