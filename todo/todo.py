@@ -124,55 +124,63 @@ class Task:
 
     def complete(self, task):
 
-        temp = self.open()
+        if type(task) == int:
+            temp = self.open()
 
-        if not os.path.exists(data_path):
+            if not os.path.exists(data_path):
 
-            return print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
+                return print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
 
-        elif os.path.exists(data_path):
+            elif os.path.exists(data_path):
 
-            for todo in temp:
-                if int(todo['id']) == int(task):
-                    todo['done'] = True
-                    todo['done_at'] =  datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+                for todo in temp:
+                    if int(todo['id']) == int(task):
+                        todo['done'] = True
+                        todo['done_at'] =  datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
-            with open(f'{os.getcwd()}/data/.todos.json', 'r+') as todos:
-                todos.seek(0)
-                todos.truncate()
+                with open(f'{os.getcwd()}/data/.todos.json', 'r+') as todos:
+                    todos.seek(0)
+                    todos.truncate()
 
-                json.dump(temp, todos, indent=4)
+                    json.dump(temp, todos, indent=4)
 
-            return True
+                return True
 
+            else:
+                return False
         else:
-            return False
+            return print('Please, write the number of the task you want to mark as completed.')
+
             
 
     def delete(self, task):
         
-        temp = self.open()
 
-        if not os.path.exists(data_path):
+        if type(task) == int:
+            temp = self.open()
 
-            return print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
+            if not os.path.exists(data_path):
 
-        elif os.path.exists(data_path):
+                return print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
 
-            for todo in temp:
-                if int(todo['id']) == int(task):
-                    del temp[temp.index(todo)]
-            print(temp)
-            with open(f'{os.getcwd()}/data/.todos.json', 'r+') as todos:
-                todos.seek(0)
-                todos.truncate()
+            elif os.path.exists(data_path):
 
-                json.dump(temp, todos, indent=4)
+                for todo in temp:
+                    if int(todo['id']) == int(task):
+                        del temp[temp.index(todo)]
 
-            return True 
+                with open(f'{os.getcwd()}/data/.todos.json', 'r+') as todos:
+                    todos.seek(0)
+                    todos.truncate()
 
+                    json.dump(temp, todos, indent=4)
+
+                return True 
+
+            else:
+                return False
         else:
-            return False
+            return print('Please, write the number of the task you want to delete.')
 
 
 
