@@ -2,6 +2,7 @@ from dataclasses import dataclass, asdict
 from datetime import datetime
 import json
 import os
+from typing import Any, Literal
 
 
 # Main 'Database' file
@@ -15,11 +16,10 @@ class Task:
     id: int
     name: str
     done: bool
-    created_at: datetime
-    done_at: datetime
+    created_at: str
+    done_at: str
 
     # Don't need this. Not right now. Maybe never.
-
     # def __init__(self, id, name, done, created_at, done_at):
     #     self.id = id
     #     self.name = name
@@ -28,19 +28,41 @@ class Task:
     #     self.done_at = done_at
 
 
-    def open(self, todos) -> None:
-        if os.path.exists(data_path):
-            with open(f'{os.getcwd()}/data/.todos.json', 'r+') as todo:
-                self.created_at = json.dumps(self.created_at.strftime("%Y-%m-%d %H:%M:%S")) 
-                self.done_at = json.dumps(self.done_at.strftime("%Y-%m-%d %H:%M:%S")) 
-                tasks = json.load(todo)
-                tasks.append(asdict(self))
+    def open(self, todos = None) -> (Any | Literal[False] | None):
 
-                todo.seek(0)
-                todo.truncate()
-                json.dump(tasks, todo, indent=4)
+        print(todos)
 
-        else: return False
+        if todos is None:
+            if os.path.exists(data_path):
+                with open(f'{os.getcwd()}/data/.todos.json', 'r') as todos:
+                    tasks = json.load(todos)
+                    return tasks
+
+            else: return False
+
+        else:
+            if not os.path.exists(data_path):
+
+                with open(f'{os.getcwd()}/data/.todos.json', 'w+') as todos:
+
+                    task = [asdict(self)]
+                    json.dump(task, todos, indent=4)
+                     
+
+
+            elif os.path.exists(data_path):
+
+                with open(f'{os.getcwd()}/data/.todos.json', 'r+') as todos:
+                    
+                    tasks = json.load(todos)
+                    tasks.append(asdict(self))
+                    todos.seek(0)
+                    todos.truncate()
+                    json.dump(tasks, todos, indent=4)
+
+            else:
+                return False
+
 
 
 
@@ -53,14 +75,8 @@ class Task:
     def add(self):
         """Add todo's to your list
         """
-
-        if not self.open(todos=asdict(self)):
-            with open(f'{os.getcwd()}/data/.todos.json', 'a+') as todo:
-
-                self.created_at = json.dumps(self.created_at.strftime("%Y-%m-%d %H:%M:%S")) 
-                self.done_at = json.dumps(self.done_at.strftime("%Y-%m-%d %H:%M:%S")) 
-                task = [asdict(self)]
-                json.dump(task, todo, indent=4)
+        self.open(todos=asdict(self))
+        
 
     def complete(self):
         pass
@@ -72,4 +88,4 @@ class Task:
 
 
  # Used for testing.
-Task(2,'testes', False, datetime.today(), datetime.today()).add()
+Task(2,'testes', False, datetime.today().strftime("%Y-%m-%d %H:%M:%S"), datetime.today().strftime("%Y-%m-%d %H:%M:%S")).add()
