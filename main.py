@@ -40,13 +40,21 @@ def main():
 
 
     if args.list:
-      print('Listando items......')
+      todo.Task().printTodos()
+
     elif args.add:
-      print('Adicionando items......')
+      todo.Task(name=str(args.add)).add()
+      todo.Task().printTodos()
+
     elif args.complete:
-      print('Completando items......')
+      todo.Task().complete(args.complete)
+      todo.Task().printTodos()
+
     elif args.delete:
-      print('Excluindo items......')
+      todo.Task().delete(args.delete)
+      todo.Task().printTodos()
+
+
 
 if __name__ == '__main__':
   main()

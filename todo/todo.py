@@ -20,7 +20,7 @@ class Task:
     created_at: str
     done_at: str
 
-    def __init__(self, id = 0, name='', done=False, created_at='', done_at=''):
+    def __init__(self, id = 0, name='', done=False, created_at=datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), done_at=''):
 
         self.name = name
         self.done = done
@@ -127,9 +127,9 @@ class Task:
         self.open(todos=asdict(self))
 
 
-    def complete(self, task):
+    def complete(self, task_id):
 
-        if type(task) == int:
+        if type(task_id) == int:
             temp = self.open()
 
             if not os.path.exists(data_path):
@@ -139,9 +139,9 @@ class Task:
             elif os.path.exists(data_path):
 
                 for todo in temp:
-                    if int(todo['id']) == int(task):
+                    if int(todo['id']) == int(task_id):
                         todo['done'] = True
-                        todo['done_at'] =  datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+                        todo['done_at'] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
                 with open(data_path, 'r+') as todos:
                     todos.seek(0)
@@ -154,24 +154,24 @@ class Task:
             else:
                 return False
         else:
-            return print('Please, write the number of the task you want to mark as completed.')
+            return False
 
             
 
-    def delete(self, task):
+    def delete(self, task_id):
         
 
-        if type(task) == int:
+        if type(task_id) == int:
             temp = self.open()
 
             if not os.path.exists(data_path):
 
-                return print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
+                print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
 
             elif os.path.exists(data_path):
 
                 for todo in temp:
-                    if int(todo['id']) == int(task):
+                    if int(todo['id']) == int(task_id):
                         del temp[temp.index(todo)]
 
                 with open(data_path, 'r+') as todos:
@@ -185,8 +185,7 @@ class Task:
             else:
                 return False
         else:
-            return print('Please, write the number of the task you want to delete.')
-
+            return False
 
 
 
