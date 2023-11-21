@@ -17,7 +17,7 @@ class Task:
     created_at: str
     done_at: str
 
-    def __init__(self, id = 0, name='', done=False, created_at=datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), done_at=''):
+    def __init__(self, id = 1, name='', done=False, created_at=datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), done_at=''):
 
         self.name = name
         self.done = done
@@ -28,7 +28,6 @@ class Task:
 
         if self.open()[-1]['id']:
             self.id = int(self.open()[-1]['id']) + 1
-            
         else :
             self.id = id
 
@@ -49,9 +48,6 @@ class Task:
 
                     task = [asdict(self)]
                     json.dump(task, todos, indent=4)
-                
-                return True
-
 
             elif os.path.exists(self.data_path):
 
@@ -62,9 +58,6 @@ class Task:
                     todos.seek(0)
                     todos.truncate()
                     json.dump(tasks, todos, indent=4)
-
-                return True
-
 
             else:
                 return False
@@ -126,12 +119,11 @@ class Task:
 
     def complete(self, task_id):
 
-    
         temp = self.open()
 
         if not os.path.exists(self.data_path):
 
-            return print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
+            print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
 
         elif os.path.exists(self.data_path):
 
@@ -145,8 +137,6 @@ class Task:
                 todos.truncate()
 
                 json.dump(temp, todos, indent=4)
-
-            return True
 
         else:
             return False
@@ -172,19 +162,16 @@ class Task:
 
                 json.dump(temp, todos, indent=4)
 
-            return True 
-
         else:
             return False
         
 
-# Used for testing.
+###### Use for testing.
 # Task(5, 'a', False, datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), '').add()
 # Task().printTodos()
 # Task().complete(5)
 # Task().delete(5)
 
 
-
-# win 
+# win - USER PATH - FUTURE IDEA FOR LAUNCH
 # print(os.path.expanduser('~/documents/'))
