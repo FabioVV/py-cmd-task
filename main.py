@@ -1,4 +1,4 @@
-from todo import todo
+from todo.todo import Task
 import subprocess
 import platform
 import argparse
@@ -41,26 +41,26 @@ def main():
 
 
     if args.list:
-      todo.Task().printTodos()
+      Task().printTodos()
 
     elif args.add:
-      todo.Task(name=str(args.add)).add()
-      todo.Task().printTodos()
+      Task(name=str(args.add)).add()
+      Task().printTodos()
 
     elif args.complete:
       try:
-        todo.Task().complete(args.complete)
-        todo.Task().printTodos()
+        Task().complete(args.complete)
+        Task().printTodos()
       except Exception:
-        todo.Task().printTodos()
+        Task().printTodos()
         print('Please, enter a number corresponding to a task.')
 
     elif args.delete:
       try:
-        todo.Task().delete(int(args.delete))
-        todo.Task().printTodos()
+        Task().delete(int(args.delete))
+        Task().printTodos()
       except Exception:
-        todo.Task().printTodos()
+        Task().printTodos()
         print('Please, enter a number corresponding to a task.')
 
 
