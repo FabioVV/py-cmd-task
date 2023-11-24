@@ -49,7 +49,7 @@ def main():
 
     elif args.complete:
       try:
-        Task().complete(args.complete)
+        Task().complete(int(args.complete))
         Task().printTodos()
       except Exception:
         Task().printTodos()

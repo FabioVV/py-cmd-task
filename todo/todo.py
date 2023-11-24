@@ -126,7 +126,7 @@ class Task:
         elif os.path.exists(self.data_path):
 
             for todo in temp:
-                if int(todo['id']) == int(task_id):
+                if int(todo['id']) == task_id:
                     todo['done'] = True
                     todo['done_at'] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
@@ -150,7 +150,7 @@ class Task:
         elif os.path.exists(self.data_path):
 
             for todo in temp:
-                if int(todo['id']) == int(task_id):
+                if int(todo['id']) == task_id:
                     del temp[temp.index(todo)]
 
             with open(self.data_path, 'r+') as todos:
