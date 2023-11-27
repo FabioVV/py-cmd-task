@@ -16,18 +16,20 @@ class Task:
     done: bool = False
     created_at: str = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     done_at: str = ''
-    data_path = f"{os.path.expanduser('~/documents')}/.todos.json"
+    data_path: str = f"{os.path.expanduser('~/documents')}/.todos.json"
 
 
 
     def open(self, todos = None) -> (Any | Literal[False] | None):
 
+        # Read all todos
         if todos is None:
             if os.path.exists(self.data_path):
                 with open(self.data_path, 'r') as todos:
                     tasks = json.load(todos)
                     return tasks
-
+                
+        # Create a todo
         else:
             if not os.path.exists(self.data_path):
 
@@ -39,20 +41,30 @@ class Task:
             elif os.path.exists(self.data_path):
 
                 with open(self.data_path, 'r+') as todos:
-                    
-                    tasks = json.load(todos)
-                    
+
                     try:
+                        tasks = json.load(todos)
                         self.id = tasks[-1]['id'] + 1
-
-                    except IndexError:
-                        self.id = 1
-
-                    finally:
                         tasks.append(asdict(self))
                         todos.seek(0)
                         todos.truncate()
                         json.dump(tasks, todos, indent=4)
+
+                    except IndexError:
+                        tasks = json.load(todos)
+                        tasks.append(asdict(self))
+                        todos.seek(0)
+                        todos.truncate()
+                        json.dump(tasks, todos, indent=4)
+
+                    except json.JSONDecodeError:
+                        tasks = []
+                        self.id = 1
+                        tasks.append(asdict(self))
+                        todos.seek(0)
+                        todos.truncate()
+                        json.dump(tasks, todos, indent=4)
+
 
     def printTodos(self):
         """Read your todo's and display it to the CLI
@@ -61,18 +73,29 @@ class Task:
         rows = []
         total_pending = 0
 
-        for todo in self.open():
+        try:
+            for todo in self.open():
 
-            if not todo['done']:
-                todo['done'] = ' No'
-                total_pending += 1 
+                if not todo['done']:
+                    todo['done'] = ' No'
+                    total_pending += 1 
+                else:
+                    todo['done'] = " \u2705"
+
+                if not todo['done_at']:
+                    todo['done_at'] = 'Not completed yet.'
+
+                rows.append([todo['id'], todo['name'], todo['done'], todo['created_at'], todo['done_at']])
+
             else:
-                todo['done'] = " \u2705"
+                # No todos found - Populate with - 
+                rows.append(['-', '-', '-', '-', '-'])
 
-            if not todo['done_at']:
-                todo['done_at'] = 'Not completed yet.'
+        except json.JSONDecodeError:
+            # Sometimes it causes this error, sometimes it does not. Din't figure it out why. Will look more into it later.
+            # No todos found - Populate with - 
+            rows.append(['-', '-', '-', '-', '-'])
 
-            rows.append([todo['id'], todo['name'], todo['done'], todo['created_at'], todo['done_at']])
 
         colors = [
             pretty_tables.Colors.bold,
@@ -88,7 +111,7 @@ class Task:
             empty_cell_placeholder='--',
             colors=colors, 
         )
-
+        
         for _ in range(2):
             print()
 
@@ -112,11 +135,7 @@ class Task:
 
         temp = self.open()
 
-        if not os.path.exists(self.data_path):
-
-            print(Fore.RED + "Error" + Fore.RESET +" - You don't have tasks yet. Add one using the -a or -add followed by the name of the task.")
-
-        elif os.path.exists(self.data_path):
+        if os.path.exists(self.data_path):
 
             for todo in temp:
                 if int(todo['id']) == task_id:
@@ -134,11 +153,7 @@ class Task:
         
         temp = self.open()
 
-        if not os.path.exists(self.data_path):
-
-            print(Fore.RED + "Error" + Fore.RESET +" - You don't have tasks yet. Add one using the -a or -add followed by the name of the task.")
-
-        elif os.path.exists(self.data_path):
+        if os.path.exists(self.data_path):
 
             for todo in temp:
                 if int(todo['id']) == task_id:
@@ -149,10 +164,58 @@ class Task:
                 todos.truncate()
 
                 json.dump(temp, todos, indent=4)
-        
 
-###### Use for testing.
-# Task(5, 'a', False, datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), '').add()
-# Task().printTodos()
-# Task().complete(5)
-# Task().delete(5)
+    def reset(self, task_id):
+
+        temp = self.open()
+
+        if os.path.exists(self.data_path):
+
+            for todo in temp:
+                if int(todo['id']) == task_id:
+                    todo['done'] = False
+                    todo['done_at'] = ''
+
+            with open(self.data_path, 'r+') as todos:
+                todos.seek(0)
+                todos.truncate()
+
+                json.dump(temp, todos, indent=4)
+
+
+    def reset_all(self):
+
+        temp = self.open()
+
+        for todo in temp:
+            todo['done_at'] = ''
+            todo['done'] = False
+
+        with open(self.data_path, 'r+') as todos:
+            todos.seek(0)
+            todos.truncate()
+
+            json.dump(temp, todos, indent=4)
+
+
+    def delete_all(self):
+
+        with open(self.data_path, 'r+') as todos:
+            todos.truncate(0)
+
+
+    def complete_all(self):
+
+        temp = self.open()
+
+        if os.path.exists(self.data_path):
+
+            for todo in temp:
+                todo['done'] = True
+                todo['done_at'] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+
+            with open(self.data_path, 'r+') as todos:
+                todos.seek(0)
+                todos.truncate()
+
+                json.dump(temp, todos, indent=4)
