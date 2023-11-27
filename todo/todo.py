@@ -16,7 +16,7 @@ class Task:
     done: bool = False
     created_at: str = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     done_at: str = ''
-    data_path = f'{os.getcwd()}/data/.todos.json'
+    data_path = f"{os.path.expanduser('~/documents')}/.todos.json"
 
 
 
@@ -156,7 +156,3 @@ class Task:
 # Task().printTodos()
 # Task().complete(5)
 # Task().delete(5)
-
-
-# win - USER PATH - FUTURE IDEA FOR LAUNCH
-# print(os.path.expanduser('~/documents/'))
