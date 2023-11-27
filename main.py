@@ -55,7 +55,6 @@ def main():
       finally:
         Task().printTodos()
 
-
     elif args.delete:
       try:
         Task().delete(int(args.delete))
@@ -63,6 +62,7 @@ def main():
         print('Please, enter a number corresponding to a task.')
       finally:
         Task().printTodos()
+
 
 if __name__ == '__main__':
   main()

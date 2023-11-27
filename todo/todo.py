@@ -19,13 +19,6 @@ class Task:
     data_path = f'{os.getcwd()}/data/.todos.json'
 
 
-    def __init__(self):
-
-        if self.open()[-1]['id']:
-            self.id = int(self.open()[-1]['id']) + 1
-        else:
-            self.id = id
-            
 
     def open(self, todos = None) -> (Any | Literal[False] | None):
 
@@ -34,8 +27,6 @@ class Task:
                 with open(self.data_path, 'r') as todos:
                     tasks = json.load(todos)
                     return tasks
-
-            else: return False
 
         else:
             if not os.path.exists(self.data_path):
@@ -50,12 +41,12 @@ class Task:
                 with open(self.data_path, 'r+') as todos:
                     
                     tasks = json.load(todos)
+
+                    self.id = tasks[-1]['id'] + 1
                     tasks.append(asdict(self))
                     todos.seek(0)
                     todos.truncate()
                     json.dump(tasks, todos, indent=4)
-
-            else: return False
 
     def printTodos(self):
         """Read your todo's and display it to the CLI
@@ -132,8 +123,6 @@ class Task:
 
                 json.dump(temp, todos, indent=4)
 
-        else: return False
-
 
     def delete(self, task_id):
         
@@ -154,8 +143,6 @@ class Task:
                 todos.truncate()
 
                 json.dump(temp, todos, indent=4)
-
-        else: return False
         
 
 ###### Use for testing.
