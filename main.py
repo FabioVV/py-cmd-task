@@ -52,9 +52,11 @@ def main():
     if args.list:
       Task().printTodos()
 
+
     elif args.add:
       Task(name=str(args.add)).add()
       print_success(success=f'added new task named ' + Fore.CYAN + f'{str(args.add)}')
+
 
     elif args.complete:
       try:
@@ -90,6 +92,7 @@ def main():
 
         except Exception:
           print_error(error='program was unable to mark all tasks as undone.')
+
 
     elif args.delete_all:
         try:

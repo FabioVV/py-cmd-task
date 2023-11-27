@@ -1,5 +1,4 @@
 from dataclasses import dataclass, asdict
-from types import NoneType
 from typing import Any, Literal
 from datetime import datetime
 from colorama import Fore
@@ -18,10 +17,9 @@ class Task:
     created_at: str = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     done_at: str = ''
     data_path: str = f"{os.path.expanduser('~/documents')}/.todos.json"
+        
 
-
-
-    def open(self, todos = None) -> (Any | Literal[False] | None):
+    def open_or_create(self, todos = None) -> (Any | Literal[False] | None):
 
         # Read all todos
         if todos is None:
@@ -70,12 +68,15 @@ class Task:
     def printTodos(self):
         """Read your todo's and display it to the CLI
         """
+
+        # Clear the cli before printing out the table
+
         headers = ["Nº", "Name", "Done?", "Created at", "Completed at"]
         rows = []
         total_pending = 0
 
         try:
-            for todo in self.open():
+            for todo in self.open_or_create():
 
                 if not todo['done']:
                     todo['done'] = ' No'
@@ -112,7 +113,8 @@ class Task:
             empty_cell_placeholder='--',
             colors=colors, 
         )
-        
+
+
         for _ in range(2):
             print()
 
@@ -129,13 +131,13 @@ class Task:
     def add(self):
         """Add todo's to your list
         """
-        self.open(todos=asdict(self))
+        self.open_or_create(todos=asdict(self))
         self.printTodos()
 
 
     def complete(self, task_id):
 
-        temp = self.open()
+        temp = self.open_or_create()
 
         if os.path.exists(self.data_path):
 
@@ -155,7 +157,7 @@ class Task:
 
     def delete(self, task_id):
         
-        temp = self.open()
+        temp = self.open_or_create()
 
         if os.path.exists(self.data_path):
 
@@ -174,7 +176,7 @@ class Task:
 
     def reset(self, task_id):
 
-        temp = self.open()
+        temp = self.open_or_create()
 
         if os.path.exists(self.data_path):
 
@@ -194,7 +196,7 @@ class Task:
 
     def reset_all(self):
 
-        temp = self.open()
+        temp = self.open_or_create()
 
         for todo in temp:
             todo['done_at'] = ''
@@ -219,7 +221,7 @@ class Task:
 
     def complete_all(self):
 
-        temp = self.open()
+        temp = self.open_or_create()
 
         if os.path.exists(self.data_path):
 
