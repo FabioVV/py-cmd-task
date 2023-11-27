@@ -129,6 +129,7 @@ class Task:
         """Add todo's to your list
         """
         self.open(todos=asdict(self))
+        self.printTodos()
 
 
     def complete(self, task_id):
@@ -148,6 +149,8 @@ class Task:
 
                 json.dump(temp, todos, indent=4)
 
+        self.printTodos()
+
 
     def delete(self, task_id):
         
@@ -164,6 +167,9 @@ class Task:
                 todos.truncate()
 
                 json.dump(temp, todos, indent=4)
+
+        self.printTodos()
+
 
     def reset(self, task_id):
 
@@ -182,6 +188,8 @@ class Task:
 
                 json.dump(temp, todos, indent=4)
 
+        self.printTodos()
+
 
     def reset_all(self):
 
@@ -197,11 +205,15 @@ class Task:
 
             json.dump(temp, todos, indent=4)
 
+        self.printTodos()
+
 
     def delete_all(self):
 
         with open(self.data_path, 'r+') as todos:
             todos.truncate(0)
+
+        self.printTodos()
 
 
     def complete_all(self):
@@ -219,3 +231,5 @@ class Task:
                 todos.truncate()
 
                 json.dump(temp, todos, indent=4)
+        
+        self.printTodos()

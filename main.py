@@ -10,7 +10,7 @@ from os import path
 
 
 
-# Initialize main variables - (I may not be using them right now.)
+# Initialize main variables
 parser = ArgumentParser(description='Todo CLI.', formatter_class=ArgumentDefaultsHelpFormatter)
 
 parser.add_argument('-a', '--add', help='Write this if you want to add a task to your list.')
@@ -54,13 +54,11 @@ def main():
 
     elif args.add:
       Task(name=str(args.add)).add()
-      Task().printTodos()
       print_success(success=f'added new task named ' + Fore.CYAN + f'{str(args.add)}')
 
     elif args.complete:
       try:
         Task().complete(int(args.complete))
-        Task().printTodos()
         print_success(success=f'your task number {str(args.complete)} has been marked as completed.')
 
         
@@ -72,7 +70,6 @@ def main():
     elif args.delete:
       try:
         Task().delete(int(args.delete))
-        Task().printTodos()
         print_success(success=f'your task number {str(args.delete)} has been deleted.')
 
       except ValueError:
@@ -82,7 +79,6 @@ def main():
     elif args.reset:
         try:
           Task().reset(int(args.reset))
-          Task().printTodos()
           print_success(success=f'your task number {str(args.reset)} has been marked as undone.')
 
         except Exception:
@@ -92,7 +88,6 @@ def main():
     elif args.reset_all:
         try:
           Task().reset_all()
-          Task().printTodos()
           print_success_plus_warning(success='all of your current tasks have been marked as undone.')
 
         except Exception:
@@ -101,7 +96,6 @@ def main():
     elif args.delete_all:
         try:
           Task().delete_all()
-          Task().printTodos()
           print_success_plus_warning(success='all of your tasks have been deleted.')
 
         except Exception:
@@ -111,7 +105,6 @@ def main():
     elif args.complete_all:
         try:
           Task().complete_all()
-          Task().printTodos()
           print_success_plus_warning(success='all of your tasks have been completed.')
 
         except JSONDecodeError:
