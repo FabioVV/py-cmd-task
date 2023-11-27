@@ -1,4 +1,5 @@
 from dataclasses import dataclass, asdict
+from types import NoneType
 from typing import Any, Literal
 from datetime import datetime
 from colorama import Fore
@@ -91,9 +92,9 @@ class Task:
                 # No todos found - Populate with - 
                 rows.append(['-', '-', '-', '-', '-'])
 
-        except json.JSONDecodeError:
-            # Sometimes it causes this error, sometimes it does not. Din't figure it out why. Will look more into it later.
-            # No todos found - Populate with - 
+        except (TypeError, json.JSONDecodeError):
+
+            # No todos found or json file found - Populate with - 
             rows.append(['-', '-', '-', '-', '-'])
 
 
