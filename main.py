@@ -1,4 +1,4 @@
-from utils.my_utilities import print_success_plus_warning, print_error, print_success
+from utils.my_utilities import print_success_plus_warning, print_success, print_error
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from json import JSONDecodeError
 from subprocess import call
@@ -60,8 +60,6 @@ def main():
       try:
         Task().complete(int(args.complete))
         print_success(success=f'your task number {str(args.complete)} has been marked as completed.')
-
-        
 
       except ValueError:
         print_error(error='please, enter a number corresponding to a task.')
