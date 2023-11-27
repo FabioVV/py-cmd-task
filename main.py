@@ -1,12 +1,12 @@
-from utils.my_utilities import print_two_spaces
+from utils.my_utilities import print_success_plus_warning, print_error, print_success
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from json import JSONDecodeError
-from todo.todo import Task
-from colorama import Fore
 from subprocess import call
 from platform import system
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-import sys
-import os
+from todo.todo import Task
+from colorama import Fore
+from sys import argv
+from os import path
 
 
 
@@ -28,16 +28,16 @@ config = vars(args)
 def main():
 
   # Check to see if any number of arguments have been passed
-  if not len(sys.argv) > 1:
+  if not len(argv) > 1:
     match system():
 
       case 'Windows':
         call('cls', shell=True)
-        call(f'python {os.path.basename(__file__)} -h', shell=True)
+        call(f'python {path.basename(__file__)} -h', shell=True)
         call('echo Hello, friend.', shell=True)
       case _:
         call('clear', shell=True)
-        call(f'python3 {os.path.basename(__file__)} -h', shell=True)
+        call(f'python3 {path.basename(__file__)} -h', shell=True)
         call('echo Hello, friend.', shell=True)
 
   else:
@@ -55,84 +55,68 @@ def main():
     elif args.add:
       Task(name=str(args.add)).add()
       Task().printTodos()
-      print(Fore.GREEN + 'Success' + Fore.RESET + ' - added new task named ' + Fore.CYAN + f'{str(args.add)}')
-      print(Fore.RESET + '')
-      print('')
+      print_success(success=f'added new task named ' + Fore.CYAN + f'{str(args.add)}')
 
     elif args.complete:
       try:
         Task().complete(int(args.complete))
         Task().printTodos()
-        print(Fore.GREEN + 'Success' + Fore.RESET + f' - your task number {int(args.complete)} has been marked as completed.')
-        print_two_spaces()
+        print_success(success=f'your task number {str(args.complete)} has been marked as completed.')
+
         
 
       except ValueError:
-        print(Fore.RED + 'Error' + Fore.RESET +' - Please, enter a number corresponding to a task.')
+        print_error(error='please, enter a number corresponding to a task.')
 
 
     elif args.delete:
       try:
         Task().delete(int(args.delete))
         Task().printTodos()
-        print(Fore.GREEN + 'Success' + Fore.RESET + f' - your task number {int(args.delete)} has been deleted.')
-        print_two_spaces()
+        print_success(success=f'your task number {str(args.delete)} has been deleted.')
 
       except ValueError:
-        print_two_spaces()
-        print(Fore.RED + 'Error' + Fore.RESET +' - Unknow option. Run the script again without any arguments to see available commands.')
-        print_two_spaces()
+        print_error(error='unknow option. Run the script again without any arguments to see available commands.')
+
 
     elif args.reset:
         try:
           Task().reset(int(args.reset))
           Task().printTodos()
-          print(Fore.GREEN + 'Success' + Fore.RESET + f' - your task number {int(args.reset)} has been marked as undone.')
-          print_two_spaces()
+          print_success(success=f'your task number {str(args.reset)} has been marked as undone.')
 
         except Exception:
-          print_two_spaces()
-          print(Fore.RED + 'Error' + Fore.RESET +' - Unknow option. Run the script again without any arguments to see available commands.')
-          print_two_spaces()
+          print_error(error='unknow option. Run the script again without any arguments to see available commands.')
+
 
     elif args.reset_all:
         try:
           Task().reset_all()
           Task().printTodos()
-          print(Fore.RED + 'IRREVERSIBLE' + Fore.RESET +' - this action is irreversible.')
-          print(Fore.GREEN + 'Success' + Fore.RESET +' - all of your current tasks have been marked as undone.')
-          print_two_spaces()
+          print_success_plus_warning(success='all of your current tasks have been marked as undone.')
 
         except Exception:
-          print_two_spaces()
-          print(Fore.RED + 'Error' + Fore.RESET +' - program was unable to mark all tasks as undone.')
-          print_two_spaces()
-        
+          print_error(error='program was unable to mark all tasks as undone.')
+
     elif args.delete_all:
         try:
           Task().delete_all()
           Task().printTodos()
-          print(Fore.RED + 'IRREVERSIBLE' + Fore.RESET +' - this action is irreversible.')
-          print(Fore.GREEN + 'Success' + Fore.RESET +' - all of your tasks have been deleted.')
-          print_two_spaces()
+          print_success_plus_warning(success='all of your tasks have been deleted.')
 
         except Exception:
-          print_two_spaces()
-          print(Fore.RED + 'Error' + Fore.RESET +' - program was unable to delete your tasks.')
-          print_two_spaces()
+          print_error(error='program was unable to delete your tasks.')
+
 
     elif args.complete_all:
         try:
           Task().complete_all()
           Task().printTodos()
-          print(Fore.RED + 'IRREVERSIBLE' + Fore.RESET +' - this action is irreversible.')
-          print(Fore.GREEN + 'Success' + Fore.RESET +' - all of your tasks have been completed.')
-          print_two_spaces()
+          print_success_plus_warning(success='all of your tasks have been completed.')
 
         except JSONDecodeError:
-          print_two_spaces()
-          print(Fore.RED + 'Error' + Fore.RESET +' - No tasks found. Use the argument -l to list any tasks you might have.')
-          print_two_spaces()
+          print_error(error='no tasks found. Use the argument -l to list any tasks you might have.')
+
 
 
 if __name__ == '__main__':
