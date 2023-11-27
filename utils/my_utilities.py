@@ -38,4 +38,3 @@ def print_success(success: str = 'Success.'):
 
     print(Fore.GREEN + 'Success' + Fore.RESET + f' - {success.rstrip().lstrip()}')
     print(Fore.RESET + '')
-    print_two_spaces()
