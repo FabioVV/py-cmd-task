@@ -50,19 +50,19 @@ def main():
     elif args.complete:
       try:
         Task().complete(int(args.complete))
-        Task().printTodos()
       except Exception:
-        Task().printTodos()
         print('Please, enter a number corresponding to a task.')
+      finally:
+        Task().printTodos()
+
 
     elif args.delete:
       try:
         Task().delete(int(args.delete))
-        Task().printTodos()
       except Exception:
-        Task().printTodos()
         print('Please, enter a number corresponding to a task.')
-
+      finally:
+        Task().printTodos()
 
 if __name__ == '__main__':
   main()

@@ -11,25 +11,21 @@ import os
 # Task class
 @dataclass(frozen=False, order=True)
 class Task:
-    id: int
-    name: str
-    done: bool
-    created_at: str
-    done_at: str
+    id: int = 1
+    name: str = ''
+    done: bool = False
+    created_at: str = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+    done_at: str = ''
+    data_path = f'{os.getcwd()}/data/.todos.json'
 
-    def __init__(self, id = 1, name='', done=False, created_at=datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), done_at=''):
 
-        self.name = name
-        self.done = done
-        self.created_at = created_at
-        self.done_at = done_at
-        self.data_path = f'{os.getcwd()}/data/.todos.json'
-
+    def __init__(self):
 
         if self.open()[-1]['id']:
             self.id = int(self.open()[-1]['id']) + 1
         else:
             self.id = id
+            
 
     def open(self, todos = None) -> (Any | Literal[False] | None):
 

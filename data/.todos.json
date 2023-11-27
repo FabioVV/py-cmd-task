@@ -12,12 +12,5 @@
         "done": true,
         "created_at": "20/11/2023, 19:40:23",
         "done_at": "20/11/2023, 19:40:52"
-    },
-    {
-        "id": 60,
-        "name": "teste",
-        "done": false,
-        "created_at": "20/11/2023, 19:40:28",
-        "done_at": ""
     }
 ]
