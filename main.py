@@ -1,4 +1,5 @@
 from todo.todo import Task
+from colorama import Fore
 import subprocess
 import platform
 import argparse
@@ -51,7 +52,7 @@ def main():
       try:
         Task().complete(int(args.complete))
       except Exception:
-        print('Please, enter a number corresponding to a task.')
+        print(Fore.RED + 'Error' + Fore.RESET +' - Please, enter a number corresponding to a task.')
       finally:
         Task().printTodos()
 
@@ -59,7 +60,7 @@ def main():
       try:
         Task().delete(int(args.delete))
       except Exception:
-        print('Please, enter a number corresponding to a task.')
+        print(Fore.RED + 'Error' + Fore.RESET +' - Please, enter a number corresponding to a task.')
       finally:
         Task().printTodos()
 

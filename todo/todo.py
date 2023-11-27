@@ -108,7 +108,7 @@ class Task:
 
         if not os.path.exists(self.data_path):
 
-            print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
+            print(Fore.RED + "Error" + Fore.RESET +" - You don't have tasks yet. Add one using the -a or -add followed by the name of the task.")
 
         elif os.path.exists(self.data_path):
 
@@ -130,7 +130,7 @@ class Task:
 
         if not os.path.exists(self.data_path):
 
-            print("You don't tasks yet. Add one using the -a or -add followed by the name of the task.")
+            print(Fore.RED + "Error" + Fore.RESET +" - You don't have tasks yet. Add one using the -a or -add followed by the name of the task.")
 
         elif os.path.exists(self.data_path):
 
