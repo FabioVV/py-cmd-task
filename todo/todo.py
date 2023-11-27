@@ -41,12 +41,18 @@ class Task:
                 with open(self.data_path, 'r+') as todos:
                     
                     tasks = json.load(todos)
+                    
+                    try:
+                        self.id = tasks[-1]['id'] + 1
 
-                    self.id = tasks[-1]['id'] + 1
-                    tasks.append(asdict(self))
-                    todos.seek(0)
-                    todos.truncate()
-                    json.dump(tasks, todos, indent=4)
+                    except IndexError:
+                        self.id = 1
+
+                    finally:
+                        tasks.append(asdict(self))
+                        todos.seek(0)
+                        todos.truncate()
+                        json.dump(tasks, todos, indent=4)
 
     def printTodos(self):
         """Read your todo's and display it to the CLI
