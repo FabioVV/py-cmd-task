@@ -1,4 +1,4 @@
-from utils.my_utilities import print_success_plus_warning, print_success, print_error
+from utils.my_utilities import print_success_plus_warning, print_success, print_error, print_two_spaces
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from json import JSONDecodeError
 from subprocess import call

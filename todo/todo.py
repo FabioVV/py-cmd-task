@@ -89,13 +89,9 @@ class Task:
 
                 rows.append([todo['id'], todo['name'], todo['done'], todo['created_at'], todo['done_at']])
 
-            else:
-                # No todos found - Populate with - 
-                rows.append(['-', '-', '-', '-', '-'])
-
         except (TypeError, json.JSONDecodeError):
 
-            # No todos found or json file found - Populate with - 
+            # No todos found or json file found - Populate with -
             rows.append(['-', '-', '-', '-', '-'])
 
 
