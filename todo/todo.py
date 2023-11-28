@@ -20,6 +20,12 @@ class Task:
         
 
     def open_or_create(self, todos = None) -> (Any | Literal[False] | None):
+        """
+        
+        If passed without arguments, it opens the JSON file containing the user todo's.
+        If passed with arguments (A dict of this class), it creates a todo in the user JSON file
+        """
+        
 
         # Read all todos
         if todos is None:
@@ -106,7 +112,7 @@ class Task:
         table = pretty_tables.create(
             headers=headers,
             rows=rows,
-            empty_cell_placeholder='--',
+            empty_cell_placeholder='-',
             colors=colors, 
         )
 
