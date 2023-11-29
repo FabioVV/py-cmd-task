@@ -7,6 +7,10 @@ import json
 import os
 
 
+# Path to the JSON file
+data_path: str = f"{os.path.expanduser('~/documents')}/.todos.json"
+
+
 
 # Task class
 @dataclass(frozen=False, order=True)
@@ -16,30 +20,29 @@ class Task:
     done: bool = False
     created_at: str = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     done_at: str = ''
-    data_path: str = f"{os.path.expanduser('~/documents')}/.todos.json"
         
 
     def open_or_create(self, todos = None) -> (Any | Literal[False] | None):
 
         # Read all todos
         if todos is None:
-            if os.path.exists(self.data_path):
-                with open(self.data_path, 'r') as todos:
+            if os.path.exists(data_path):
+                with open(data_path, 'r') as todos:
                     tasks = json.load(todos)
                     return tasks
                 
         # Create a todo
         else:
-            if not os.path.exists(self.data_path):
+            if not os.path.exists(data_path):
 
-                with open(self.data_path, 'w+') as todos:
+                with open(data_path, 'w+') as todos:
 
                     task = [asdict(self)]
                     json.dump(task, todos, indent=4)
 
-            elif os.path.exists(self.data_path):
+            elif os.path.exists(data_path):
 
-                with open(self.data_path, 'r+') as todos:
+                with open(data_path, 'r+') as todos:
 
                     try:
                         tasks = json.load(todos)
@@ -135,14 +138,14 @@ class Task:
 
         temp = self.open_or_create()
 
-        if os.path.exists(self.data_path):
+        if os.path.exists(data_path):
 
             for todo in temp:
                 if int(todo['id']) == task_id:
                     todo['done'] = True
                     todo['done_at'] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
-            with open(self.data_path, 'r+') as todos:
+            with open(data_path, 'r+') as todos:
                 todos.seek(0)
                 todos.truncate()
 
@@ -155,13 +158,13 @@ class Task:
         
         temp = self.open_or_create()
 
-        if os.path.exists(self.data_path):
+        if os.path.exists(data_path):
 
             for todo in temp:
                 if int(todo['id']) == task_id:
                     del temp[temp.index(todo)]
 
-            with open(self.data_path, 'r+') as todos:
+            with open(data_path, 'r+') as todos:
                 todos.seek(0)
                 todos.truncate()
 
@@ -174,14 +177,14 @@ class Task:
 
         temp = self.open_or_create()
 
-        if os.path.exists(self.data_path):
+        if os.path.exists(data_path):
 
             for todo in temp:
                 if int(todo['id']) == task_id:
                     todo['done'] = False
                     todo['done_at'] = ''
 
-            with open(self.data_path, 'r+') as todos:
+            with open(data_path, 'r+') as todos:
                 todos.seek(0)
                 todos.truncate()
 
@@ -198,7 +201,7 @@ class Task:
             todo['done_at'] = ''
             todo['done'] = False
 
-        with open(self.data_path, 'r+') as todos:
+        with open(data_path, 'r+') as todos:
             todos.seek(0)
             todos.truncate()
 
@@ -209,7 +212,7 @@ class Task:
 
     def delete_all(self):
 
-        with open(self.data_path, 'r+') as todos:
+        with open(data_path, 'r+') as todos:
             todos.truncate(0)
 
         self.printTodos()
@@ -219,13 +222,13 @@ class Task:
 
         temp = self.open_or_create()
 
-        if os.path.exists(self.data_path):
+        if os.path.exists(data_path):
 
             for todo in temp:
                 todo['done'] = True
                 todo['done_at'] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
-            with open(self.data_path, 'r+') as todos:
+            with open(data_path, 'r+') as todos:
                 todos.seek(0)
                 todos.truncate()
 
