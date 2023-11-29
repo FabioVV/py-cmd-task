@@ -1,5 +1,4 @@
 from dataclasses import dataclass, asdict
-from typing import Any, Literal
 from datetime import datetime
 from colorama import Fore
 import pretty_tables
@@ -22,7 +21,7 @@ class Task:
     done_at: str = ''
         
 
-    def open_or_create(self, todos = None) -> (Any | Literal[False] | None):
+    def open_or_create(self, todos = None):
         """
         
         If passed without arguments, it opens the JSON file containing the user todo's.
