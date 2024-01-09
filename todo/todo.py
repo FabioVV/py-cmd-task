@@ -73,7 +73,7 @@ class Task:
                         json.dump(tasks, todos, indent=4)
 
 
-    def printTodos(self):
+    def printTodos(self) -> None:
         """Read your todo's and display it to the CLI
         """
 
@@ -132,14 +132,14 @@ class Task:
             print(Fore.RESET + '')
 
 
-    def add(self):
-        """Add todo's to your list
+    def add(self) -> None:
+        """Add a todo to your todo's list
         """
         self.open_or_create(todos=asdict(self))
         self.printTodos()
 
 
-    def complete(self, task_id):
+    def complete(self, task_id) -> None:
 
         temp = self.open_or_create()
 
@@ -159,8 +159,9 @@ class Task:
         self.printTodos()
 
 
-    def delete(self, task_id):
-        
+    def delete(self, task_id) -> None:
+        """Deletes a todo from your todo's list
+        """
         temp = self.open_or_create()
 
         if os.path.exists(data_path):
@@ -178,8 +179,9 @@ class Task:
         self.printTodos()
 
 
-    def reset(self, task_id):
-
+    def reset(self, task_id) -> None:
+        """Reset's a todo from your todo's list
+        """
         temp = self.open_or_create()
 
         if os.path.exists(data_path):
@@ -198,8 +200,9 @@ class Task:
         self.printTodos()
 
 
-    def reset_all(self):
-
+    def reset_all(self) -> None:
+        """Reset's all of your todo's from your todo's list
+        """
         temp = self.open_or_create()
 
         for todo in temp:
@@ -215,16 +218,18 @@ class Task:
         self.printTodos()
 
 
-    def delete_all(self):
-
+    def delete_all(self) -> None:
+        """Delete's all of your todo's from your todo's list
+        """
         with open(data_path, 'r+') as todos:
             todos.truncate(0)
 
         self.printTodos()
 
 
-    def complete_all(self):
-
+    def complete_all(self) -> None:
+        """Complete's all of your todo's from your todo's list
+        """
         temp = self.open_or_create()
 
         if os.path.exists(data_path):
